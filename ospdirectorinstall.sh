@@ -58,6 +58,21 @@ DISCOVERY_RUNBENCH_BOOL=false
 # Whether to enable the debug log level for Undercloud OpenStack
 # services. (boolean value)
 UNDERCLOUD_DEBUG_BOOL=true
+# Whether to install Tempest in the Undercloud. (boolean value)
+ENABLE_TEMPEST=false
+# Whether to use iPXE for deploy by default. (boolean value)
+IPXE_DEPLOY=true
+# Whether to store events in the Undercloud Ceilometer. (boolean
+# value)
+STORE_EVENTS=false
+
+# Maximum number of attempts the scheduler will make when deploying
+# the instance. You should keep it greater or equal to the number of
+# bare metal nodes you expect to deploy at once to work around
+# potential race condition when scheduling. (integer value)
+# Minimum value: 1
+SCHEDULER_MAX_ATTEMPTS=30
+
 ############################################################################
 
 
@@ -132,10 +147,14 @@ sudo -H -u stack bash -c "sed -i 's|#dhcp_start = 192.0.2.5|dhcp_start = $DHCP_S
 sudo -H -u stack bash -c "sed -i 's|#dhcp_end = 192.0.2.24|dhcp_end = $DHCP_END|g' /home/stack/undercloud.conf" 
 sudo -H -u stack bash -c "sed -i 's|#network_cidr = 192.0.2.0/24|network_cidr = $NETWORK_CIDR|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#network_gateway = 192.0.2.1|network_gateway = $NETWORK_GATEWAY|g' /home/stack/undercloud.conf"
-#sudo -H -u stack bash -c "sed -i 's|#discovery_interface = br-ctlplane|discovery_interface = $DISCOVERY_INTERFACE|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#discovery_iprange = 192.0.2.100,192.0.2.120|discovery_iprange = $DISCOVERY_IP_START,$DISCOVERY_IP_END|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#discovery_runbench = false|discovery_runbench = $DISCOVERY_RUNBENCH_BOOL|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#undercloud_debug = true|undercloud_debug = $UNDERCLOUD_DEBUG_BOOL|g' /home/stack/undercloud.conf"
+#sudo -H -u stack bash -c "sed -i 's|#inspection_interface = br-ctlplane|inspection_interface = $DISCOVERY_INTERFACE|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_iprange = 192.168.100.100,192.168.100.120|inspection_iprange = $DISCOVERY_IP_START,$DISCOVERY_IP_END|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_runbench = false|inspection_runbench = $DISCOVERY_RUNBENCH_BOOL|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#undercloud_debug = false|undercloud_debug = $UNDERCLOUD_DEBUG_BOOL|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#enable_tempest = false|enable_tempest = $ENABLE_TEMPEST|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#ipxe_deploy = true|ipxe_deploy = $IPXE_DEPLOY|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#store_events = false|store_events = $STORE_EVENTS|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#scheduler_max_attempts = 30|scheduler_max_attempts = $SCHEDULER_MAX_ATTEMPTS|g' /home/stack/undercloud.conf"
 
 echo "Launch the following command as user STACK!"
 echo "su - stack"
