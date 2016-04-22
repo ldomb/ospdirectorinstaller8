@@ -5,6 +5,11 @@ cp /usr/share/rhosp-director-images/ironic-python-agent-latest-8.0.tar ~/images/
 cd ~/images
 echo "untar images"
 for tarfile in *.tar; do tar -xf $tarfile; done
+echo "setting ifnames and root password"
+virt-customize -a overcloud-full.qcow2 --edit /etc/default/grub:s/net.ifnames=0/net.ifnames=1/
+virt-customize -a overcloud-full.qcow2 --edit /root/anaconda-ks.cfg:s/net.ifnames=0/net.ifnames=1/
+virt-customize --root-password password:laurent -a overcloud-full.qcow2
+
 echo "upload images"
 openstack overcloud image upload --image-path /home/stack/images/
 echo "verify images"
