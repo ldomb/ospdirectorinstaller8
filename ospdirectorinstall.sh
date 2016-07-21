@@ -16,18 +16,26 @@ PASSWD=redhat
 # defined by local_interface, with the netmask defined by the prefix     
 # portion of the value. (string value)                                   
 LOCAL_IP=192.168.2.2/24
-# Virtual IP address to use for the public endpoints of Undercloud      
-# services. (string value)
+# Network gateway for the Neutron-managed network for Overcloud
+# instances. This should match the local_ip above when using
+# masquerading. (string value)
+NETWORK_GATEWAY=192.168.2.1
+# Virtual IP address to use for the public endpoints of Undercloud
+# services.  Only used if undercloud_service_certficate is set.
 UNDERCLOUD_PUBLIC_VIP=192.168.2.3
 # Virtual IP address to use for the admin endpoints of Undercloud
-# services. (string value)
+# services.  Only used if undercloud_service_certficate is set.
 UNDERCLOUD_ADMIN_VIP=192.168.2.4
 # Certificate file to use for OpenStack service SSL connections.
-# (string value)
-#UNDERCLOUD_SERVICE_CERTIFICATE=undercloud.pem --> This is not working yet
+# Setting this enables SSL for the OpenStack API endpoints, leaving it
+UNDERCLOUD_SERVICE_CERTIFICATE=undercloud.pem
 # Network interface on the Undercloud that will be handling the PXE
 # boots and DHCP for Overcloud instances. (string value)
 LOCAL_IFACE=enp2s4
+# Virtual IP address to use for the public endpoints of Undercloud      
+# Network CIDR for the Neutron-managed network for Overcloud
+# instances. This should be the subnet used for PXE booting. 
+NETWORK_CIDR=192.168.2.0/24# services. (string value)
 # Network that will be masqueraded for external access, if required.
 # This should be the subnet used for PXE booting. (string value)
 MASQUERADE_NETWORK=192.168.2.0/24
@@ -37,24 +45,16 @@ DHCP_START=192.168.2.80
 # End of DHCP allocation range for PXE and DHCP of Overcloud
 # instances. (string value)
 DHCP_END=192.168.2.104
-# Network CIDR for the Neutron-managed network for Overcloud
-# instances. This should be the subnet used for PXE booting. (string
-# value)
-NETWORK_CIDR=192.168.2.0/24
-# Network gateway for the Neutron-managed network for Overcloud
-# instances. This should match the local_ip above when using
-# masquerading. (string value)
-NETWORK_GATEWAY=192.168.2.1
 # Network interface on which discovery dnsmasq will listen.  If in
 # doubt, use the default value. (string value)
-DISCOVERY_INTERFACE=br-ctlplane
+INSPECTION_INTERFACE=br-ctlplane
 # Temporary IP range that will be given to nodes during the discovery
 # process.  Should not overlap with the range defined by dhcp_start
 # and dhcp_end, but should be in the same network. (string value)
-DISCOVERY_IP_START=192.168.2.200
-DISCOVERY_IP_END=192.168.2.220
+INSPECTION_IP_START=192.168.2.200
+INSPECTION_IP_END=192.168.2.220
 # Whether to run benchmarks when discovering nodes. (boolean value)
-DISCOVERY_RUNBENCH_BOOL=false
+INSPECTION_RUNBENCH_BOOL=false
 # Whether to enable the debug log level for Undercloud OpenStack
 # services. (boolean value)
 UNDERCLOUD_DEBUG_BOOL=true
@@ -138,8 +138,8 @@ cd /home/stack
 echo "Modifying undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#image_path = \.|image_path = /home/stack/images|g' /home/stack/undercloud.conf" 
 sudo -H -u stack bash -c "sed -i 's|#local_ip = 192.0.2.1/24|local_ip = $LOCAL_IP|g' /home/stack/undercloud.conf" 
-sudo -H -u stack bash -c "sed -i 's|#undercloud_public_vip = 192.0.2.2|undercloud_public_vip = $UNDERCLOUD_PUBLIC_VIP|g' /home/stack/undercloud.conf" 
-sudo -H -u stack bash -c "sed -i 's|#undercloud_admin_vip = 192.0.2.3|undercloud_admin_vip = $UNDERCLOUD_ADMIN_VIP|g' /home/stack/undercloud.conf" 
+#sudo -H -u stack bash -c "sed -i 's|#undercloud_public_vip = 192.0.2.2|undercloud_public_vip = $UNDERCLOUD_PUBLIC_VIP|g' /home/stack/undercloud.conf" 
+#sudo -H -u stack bash -c "sed -i 's|#undercloud_admin_vip = 192.0.2.3|undercloud_admin_vip = $UNDERCLOUD_ADMIN_VIP|g' /home/stack/undercloud.conf" 
 #sudo -H -u stack bash -c "sed -i 's|#undercloud_service_certificate =|undercloud_service_certificate = $UNDERCLOUD_SERVICE_CERTIFICATE|g' /home/stack/undercloud.conf" 
 sudo -H -u stack bash -c "sed -i 's|#local_interface = eth1|local_interface = $LOCAL_IFACE|g' /home/stack/undercloud.conf" 
 sudo -H -u stack bash -c "sed -i 's|#masquerade_network = 192.0.2.0/24|masquerade_network = $MASQUERADE_NETWORK|g' /home/stack/undercloud.conf" 
@@ -148,8 +148,9 @@ sudo -H -u stack bash -c "sed -i 's|#dhcp_end = 192.0.2.24|dhcp_end = $DHCP_END|
 sudo -H -u stack bash -c "sed -i 's|#network_cidr = 192.0.2.0/24|network_cidr = $NETWORK_CIDR|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#network_gateway = 192.0.2.1|network_gateway = $NETWORK_GATEWAY|g' /home/stack/undercloud.conf"
 #sudo -H -u stack bash -c "sed -i 's|#inspection_interface = br-ctlplane|inspection_interface = $DISCOVERY_INTERFACE|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#inspection_iprange = 192.168.100.100,192.168.100.120|inspection_iprange = $DISCOVERY_IP_START,$DISCOVERY_IP_END|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#inspection_runbench = false|inspection_runbench = $DISCOVERY_RUNBENCH_BOOL|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_iprange = 192.168.100.100,192.168.100.120|inspection_iprange = $INSPECTION_IP_START,$INSPECTION_IP_END|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_extras = true|inspection_extras = $INSPECTION_EXTRAS|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_runbench = false|inspection_runbench = $INSPECTION_RUNBENCH_BOOL|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#undercloud_debug = false|undercloud_debug = $UNDERCLOUD_DEBUG_BOOL|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#enable_tempest = false|enable_tempest = $ENABLE_TEMPEST|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#ipxe_deploy = true|ipxe_deploy = $IPXE_DEPLOY|g' /home/stack/undercloud.conf"
