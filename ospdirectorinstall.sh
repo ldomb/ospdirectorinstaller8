@@ -53,6 +53,10 @@ INSPECTION_INTERFACE=br-ctlplane
 # and dhcp_end, but should be in the same network. (string value)
 INSPECTION_IP_START=192.168.2.200
 INSPECTION_IP_END=192.168.2.220
+# Whether to enable extra hardware collection during the inspection
+# process. Requires python-hardware or python-hardware-detect package
+# on the introspection image. 
+INSPECTION_EXTRAS=true
 # Whether to run benchmarks when discovering nodes. (boolean value)
 INSPECTION_RUNBENCH_BOOL=false
 # Whether to enable the debug log level for Undercloud OpenStack
@@ -147,8 +151,8 @@ sudo -H -u stack bash -c "sed -i 's|#dhcp_start = 192.0.2.5|dhcp_start = $DHCP_S
 sudo -H -u stack bash -c "sed -i 's|#dhcp_end = 192.0.2.24|dhcp_end = $DHCP_END|g' /home/stack/undercloud.conf" 
 sudo -H -u stack bash -c "sed -i 's|#network_cidr = 192.0.2.0/24|network_cidr = $NETWORK_CIDR|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#network_gateway = 192.0.2.1|network_gateway = $NETWORK_GATEWAY|g' /home/stack/undercloud.conf"
-#sudo -H -u stack bash -c "sed -i 's|#inspection_interface = br-ctlplane|inspection_interface = $DISCOVERY_INTERFACE|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#inspection_iprange = 192.168.100.100,192.168.100.120|inspection_iprange = $INSPECTION_IP_START,$INSPECTION_IP_END|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_interface = br-ctlplane|inspection_interface = $DISCOVERY_INTERFACE|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_iprange = 192.0.2.100,192.0.2.120|inspection_iprange = $INSPECTION_IP_START,$INSPECTION_IP_END|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#inspection_extras = true|inspection_extras = $INSPECTION_EXTRAS|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#inspection_runbench = false|inspection_runbench = $INSPECTION_RUNBENCH_BOOL|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#undercloud_debug = false|undercloud_debug = $UNDERCLOUD_DEBUG_BOOL|g' /home/stack/undercloud.conf"
