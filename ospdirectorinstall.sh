@@ -151,7 +151,7 @@ sudo -H -u stack bash -c "sed -i 's|#dhcp_start = 192.0.2.5|dhcp_start = $DHCP_S
 sudo -H -u stack bash -c "sed -i 's|#dhcp_end = 192.0.2.24|dhcp_end = $DHCP_END|g' /home/stack/undercloud.conf" 
 sudo -H -u stack bash -c "sed -i 's|#network_cidr = 192.0.2.0/24|network_cidr = $NETWORK_CIDR|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#network_gateway = 192.0.2.1|network_gateway = $NETWORK_GATEWAY|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#inspection_interface = br-ctlplane|inspection_interface = $DISCOVERY_INTERFACE|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#inspection_interface = br-ctlplane|inspection_interface = $INSPECTION_INTERFACE|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#inspection_iprange = 192.0.2.100,192.0.2.120|inspection_iprange = $INSPECTION_IP_START,$INSPECTION_IP_END|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#inspection_extras = true|inspection_extras = $INSPECTION_EXTRAS|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#inspection_runbench = false|inspection_runbench = $INSPECTION_RUNBENCH_BOOL|g' /home/stack/undercloud.conf"
