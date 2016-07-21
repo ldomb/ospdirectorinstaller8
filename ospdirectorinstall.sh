@@ -155,7 +155,7 @@ sudo -H -u stack bash -c "sed -i 's|#inspection_interface = br-ctlplane|inspecti
 sudo -H -u stack bash -c "sed -i 's|#inspection_iprange = 192.0.2.100,192.0.2.120|inspection_iprange = $INSPECTION_IP_START,$INSPECTION_IP_END|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#inspection_extras = true|inspection_extras = $INSPECTION_EXTRAS|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#inspection_runbench = false|inspection_runbench = $INSPECTION_RUNBENCH_BOOL|g' /home/stack/undercloud.conf"
-sudo -H -u stack bash -c "sed -i 's|#undercloud_debug = false|undercloud_debug = $UNDERCLOUD_DEBUG_BOOL|g' /home/stack/undercloud.conf"
+sudo -H -u stack bash -c "sed -i 's|#undercloud_debug = true|undercloud_debug = $UNDERCLOUD_DEBUG_BOOL|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#enable_tempest = false|enable_tempest = $ENABLE_TEMPEST|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#ipxe_deploy = true|ipxe_deploy = $IPXE_DEPLOY|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#store_events = false|store_events = $STORE_EVENTS|g' /home/stack/undercloud.conf"
