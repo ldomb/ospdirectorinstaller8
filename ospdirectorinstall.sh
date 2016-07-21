@@ -35,7 +35,7 @@ LOCAL_IFACE=enp2s4
 # Virtual IP address to use for the public endpoints of Undercloud      
 # Network CIDR for the Neutron-managed network for Overcloud
 # instances. This should be the subnet used for PXE booting. 
-NETWORK_CIDR=192.168.2.0/24# services. (string value)
+NETWORK_CIDR=192.168.2.0/24
 # Network that will be masqueraded for external access, if required.
 # This should be the subnet used for PXE booting. (string value)
 MASQUERADE_NETWORK=192.168.2.0/24
