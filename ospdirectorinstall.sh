@@ -161,8 +161,6 @@ sudo -H -u stack bash -c "sed -i 's|#ipxe_deploy = true|ipxe_deploy = $IPXE_DEPL
 sudo -H -u stack bash -c "sed -i 's|#store_events = false|store_events = $STORE_EVENTS|g' /home/stack/undercloud.conf"
 sudo -H -u stack bash -c "sed -i 's|#scheduler_max_attempts = 30|scheduler_max_attempts = $SCHEDULER_MAX_ATTEMPTS|g' /home/stack/undercloud.conf"
 
-echo "Launch the following command as user STACK!"
-echo "su - stack"
-echo "screen"
-echo "export HOSTNAME=$FQDN && openstack undercloud install"
-echo "CTRL a d"
+su - stack
+screen -S ospinstaller -dmS openstack undercloud install
+screen -list
